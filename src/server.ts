@@ -1,15 +1,31 @@
 import express, { NextFunction, Request, Response } from "express";
 import bodyParser from "body-parser";
 import * as core from "express-serve-static-core";
+import * as nunjucks from "nunjucks";
 import slugify from "slug";
 import { Db } from "mongodb";
 import * as platformController from "./controllers/platform";
 import { PlatformModel } from "./models/platform";
 
+
+
+
 export function makeApp(db: Db): core.Express {
   const app = express();
+
+   nunjucks.configure("views", {
+  autoescape: true,
+  express: app
+});
+  
+   app.set("view engine", "njk");
+
   const jsonParser = bodyParser.json();
   const platformModel = new PlatformModel(db.collection("platforms"));
+
+  app.get("/", (request, response) => {
+    response.render("home");
+  });
 
   app.get("/platforms", platformController.index(platformModel));
   app.get("/platforms/:slug", platformController.show(platformModel));

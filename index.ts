@@ -2,6 +2,7 @@ import * as dotenv from "dotenv";
 import { MongoClient } from "mongodb";
 import { makeApp } from "./src/server";
 
+
 dotenv.config();
 
 const options = { useNewUrlParser: true, useUnifiedTopology: true };
