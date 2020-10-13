@@ -4,7 +4,7 @@ import * as core from "express-serve-static-core";
 import * as nunjucks from "nunjucks";
 import slugify from "slug";
 import { Db } from "mongodb";
-import * as platformController from "./controllers/platform";
+import * as platformController from "./controllers/platform.controller";
 import { PlatformModel } from "./models/platform";
 
 
@@ -13,12 +13,12 @@ import { PlatformModel } from "./models/platform";
 export function makeApp(db: Db): core.Express {
   const app = express();
 
-   nunjucks.configure("views", {
-  autoescape: true,
-  express: app
-});
+  nunjucks.configure("views", {
+   autoescape: true,
+   express: app
+  });
   
-   app.set("view engine", "njk");
+  app.set("view engine", "njk");
 
   const jsonParser = bodyParser.json();
   const platformModel = new PlatformModel(db.collection("platforms"));

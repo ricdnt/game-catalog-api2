@@ -1,18 +1,46 @@
-import { Request, Response } from "express";
+import express, { Request, Response } from "express";
 import { PlatformModel } from "../models/platform";
 import slugify from "slug";
+
+const clientWantsJson = (request: express.Request): boolean => request.get("accept") === "application/json";
 
 export function index(model: PlatformModel) {
   return async (request: Request, response: Response): Promise<void> => {
     const platformList = await model.findAll();
-    response.json(platformList);
+
+    if (clientWantsJson(request)) {
+      response.json(platformList)
+    } else {
+      response.render("platforms", { platformList });
+    }
   };
-}
+
+
+    /*
+    response.json(platformList);*/
+  };
 
 export function show(model: PlatformModel) {
   return async (request: Request, response: Response): Promise<void> => {
     const platform = await model.findBySlug(request.params.slug);
+/*
+    if (platform) {
+      if (clientWantsJson(request)) {
+        response.json(platform);
+      } else {
+        response.render("platform", { platform });
+      }
+    } else {
+      response.status(404);
+      if (clientWantsJson(request)) {
+        response.json({ error: "This platform does not exist." });
+      } else {
+        response.render("platform", { platform });
+      }
+    }*/
 
+
+    
     if (platform) {
       response.json(platform);
     } else {
