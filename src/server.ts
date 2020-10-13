@@ -20,10 +20,13 @@ export function makeApp(db: Db): core.Express {
   
   app.set("view engine", "njk");
 
+  app.use("/assets", express.static("public"));
+
+
   const jsonParser = bodyParser.json();
   const platformModel = new PlatformModel(db.collection("platforms"));
 
-  app.get("/", (request, response) => {
+  app.get("/home", (request, response) => {
     response.render("home");
   });
 
@@ -54,7 +57,10 @@ export function makeApp(db: Db): core.Express {
 
   app.get("/games", async (request: Request, response: Response) => {
     const games = await db.collection("games").find().toArray();
-    response.json(games);
+     
+    response.render("games", {games});
+    /*
+    response.json(games);*/
   });
 
   app.get("/games/:slug", async (request: Request, response: Response) => {

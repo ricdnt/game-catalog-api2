@@ -1,4 +1,7 @@
-<h1>hello platform</h1>
+{% extends "layout/index.njk" %}
+
+{% block content %}
+<h1>hello platforms</h1>
 
 
 <ul>
@@ -6,3 +9,5 @@
    <li>{{platforms.name}}</li>
 {% endfor %}
 </ul>
+
+{% endblock %}
